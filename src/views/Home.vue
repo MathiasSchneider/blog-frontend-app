@@ -12,12 +12,14 @@
       <button v-on:click="createPost()">Add Post</button>
     </div>
     <div v-for="post in posts" :key="post.id">
-      <h3>Title: {{ post.title }}</h3>
-      <img :src="post.image" alt="" /><br />
+      <h3>{{ post.title }}</h3>
+      <router-link :to="`/posts/${post.id}`">
+        <img :src="post.image" alt=""
+      /></router-link>
       <p>{{ post.body }}</p>
-      <button v-on:click="showPost(post)">More Info</button>
+      <!-- <button v-on:click="showPost(post)">More Info</button> -->
     </div>
-    <dialog id="post-details">
+    <!-- <dialog id="post-details">
       <form method="dialog">
         <h1>Post Info</h1>
         <img :src="currentPost.image" alt="" />
@@ -32,7 +34,7 @@
         <button v-on:click="destroyPost()">Destroy</button>
         <button>Close</button>
       </form>
-    </dialog>
+    </dialog> -->
   </div>
 </template>
 
