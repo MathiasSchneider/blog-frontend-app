@@ -56,6 +56,7 @@
           .post("/users", this.newUserParams)
           .then((response) => {
             console.log(response.data);
+            this.$parent.flashMessage = "Successfully created an account!";
             this.$router.push("/login");
           })
           .catch((error) => {

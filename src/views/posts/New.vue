@@ -7,6 +7,7 @@
           {{ error }}
         </li>
       </ul>
+      <img v-if="status" :src="`https://http.cat/${status}`" alt="">
       <div class="form-group">
         <label>Title:</label>
         <input type="text" class="form-control" v-model="newPostParams.title" />
@@ -18,6 +19,7 @@
       <div class="form-group">
         <label>Body:</label>
         <input type="text" class="form-control" v-model="newPostParams.body" />
+        <p>{{ 25 - newPostParams.body.length }} characters remaining</p>
       </div>
       <input type="submit" class="btn btn-primary" value="Submit" />
     </form>
@@ -30,8 +32,13 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      newPostParams: {},
+      newPostParams: {
+        title: "",
+        body: "",
+        image: "",
+      },
       errors: [],
+      status: "",
     };
   },
   methods: {
@@ -44,6 +51,7 @@ export default {
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.status = error.response.status;
         });
     }
   }
