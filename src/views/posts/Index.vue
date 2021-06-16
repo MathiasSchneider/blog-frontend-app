@@ -1,13 +1,22 @@
 <template>
   <div class="posts-index">
-    <input type="text" v-model="searchTerm" placeholder="Search"/>
-    <div v-for="post in filterBy(posts, searchTerm, 'title')" v-bind:key="post.id">
-      <h2>{{ post.title }}</h2>
-      <router-link :to="`/posts/${post.id}`">
-        <img :src="post.image" alt=""
-      /></router-link>
-      <p>{{ post.body }}</p>
-      <!-- <p>{{ relativeDate }}</p> -->
+    <input type="text" v-model="searchTerm" list="titles" placeholder="Search" />
+    <br />
+    <br />
+    <button v-on:click="setSortAttribute('title')">Sort by title</button>
+    <datalist id="titles">
+      <option v-for="post in posts" v-bind:key="post.id">
+        {{ post.title }}
+      </option>
+    </datalist>
+    <div is="transition-group" appear enter-active-class="animate__animated animate__fadeIn" leave-active-class="animate__animated animate__fadeOut">
+      <div v-for="post in filterBy(orderBy(posts, sortAttribute), searchTerm)" v-bind:key="post.id">
+        <h2>{{ post.title }}</h2>
+        <router-link :to="`/posts/${post.id}`">
+         <img :src="post.image" alt="" />
+        </router-link>
+        <p>{{ post.body }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +31,8 @@ export default {
     return {
       posts: [],
       searchTerm: "",
+      sortAttribute: "",
+      sortOrder: 1,
     };
   },
   created: function () {
@@ -33,6 +44,14 @@ export default {
   methods: {
     relativeDate: function (date) {
       return moment(date).fromNow();
+    },
+    setSortAttribute: function (attribute) {
+      if (this.sortAttribute === attribute) {
+        this.sortOrder = this.sortOrder * -1;
+      } else {
+        this.sortOrder = 1;
+        this.sortAttribute = attribute;
+      }
     },
   },
 };
